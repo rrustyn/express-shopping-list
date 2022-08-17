@@ -10,15 +10,15 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 /** get all items */
-// router.get('/', function(req, res) {
-//   return res.json(items = db);
-// });
+router.get('/', function(req, res) {
+  return res.json({items: db.items});
+});
 
-// /** add an item */
-// router.post('/', function(req, res) {
-//   const item = req.body
-//   db.push(item);
-// })
+/** add an item */
+router.post('/', function(req, res) {
+  const item = req.body
+  db.items.push(item);
+})
 // /** get a specific item */
 // router.get
 // /** update an item */
