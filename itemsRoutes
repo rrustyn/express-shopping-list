@@ -3,7 +3,6 @@
 const express = require("express");
 
 const db = require("./fakeDb");
-debugger;
 const router = new express.Router();
 
 router.use(express.json());
@@ -16,14 +15,33 @@ router.get('/', function(req, res) {
 
 /** add an item */
 router.post('/', function(req, res) {
-  const item = req.body
-  db.items.push(item);
+  let newItem = {name: req.body.name, price: req.body.price};
+  debugger;
+  db.items.push(newItem);
+  return res.json({added: newItem});
 })
-// /** get a specific item */
-// router.get
-// /** update an item */
-// router.patch
-// /** delete an item */
-// router.delete
+
+/** get a specific item */
+router.get("/:name", function(req, res){
+  const searchItem = req.params.name;
+  const itemDetails = db.items.filter(item => item.name === searchItem);
+  return res.json(itemDetails[0]);
+})
+
+/** update an item */
+router.patch("/:name", function(req, res){
+  const updateItem = req.params.name;
+  const itemDetails = db.items.filter(item => item.name === updateItem);
+  itemDetails[0].name = req.body.name || itemDetails[0].name;
+  itemDetails[0].price = req.body.price || itemDetails[0].price;
+  return res.json({updated: itemDetails[0]});
+})
+
+/** delete an item */
+router.delete("/:name", function(req, res){
+  const deletedItem = req.params.name;
+  db.items = db.items.filter(item => item.name !== deletedItem);
+  return res.json({message: "Deleted"});
+})
 
 module.exports = router;
